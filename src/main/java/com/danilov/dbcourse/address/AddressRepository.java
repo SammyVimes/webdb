@@ -74,4 +74,13 @@ public class AddressRepository {
         }
     }
 
+    public List<Region> getAllRegions() {
+        try {
+            return entityManager.createQuery("select a from Region a", Region.class)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            return null;
+        }
+    }
+
 }
