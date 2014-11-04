@@ -1,9 +1,11 @@
 package com.danilov.dbcourse.subscriber;
 
+import com.danilov.dbcourse.address.Address;
 import com.danilov.dbcourse.subscribe.Subscribe;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,10 +38,13 @@ public class Subscriber {
     @Column
     private String patronymic;
 
-    private String role = "USER_SUBSCRIBER";
-
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Subscribe> subscribes;
+
+    @ManyToOne
+    private Address address;
+
+    private String role = "USER_SUBSCRIBER";
 
     protected Subscriber() {
 
@@ -56,6 +61,14 @@ public class Subscriber {
 
     public void setPatronymic(final String patronymic) {
         this.patronymic = patronymic;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
     }
 
     public String getSurname() {
@@ -110,5 +123,11 @@ public class Subscriber {
         this.password = password;
     }
 
+    public void addSubscribe(final Subscribe subscribe) {
+        if (subscribes == null) {
+            subscribes = new HashSet<>();
+        }
+        subscribes.add(subscribe);
+    }
 
 }

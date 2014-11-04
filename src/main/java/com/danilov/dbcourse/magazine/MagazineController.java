@@ -1,0 +1,78 @@
+package com.danilov.dbcourse.magazine;
+
+import com.danilov.dbcourse.subscribe.Subscribe;
+import com.danilov.dbcourse.subscribe.SubscribeRepository;
+import com.danilov.dbcourse.subscriber.Subscriber;
+import com.danilov.dbcourse.subscriber.SubscriberRepository;
+import com.danilov.dbcourse.subscriber.SubscriberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * Created by Semyon on 04.11.2014.
+ */
+@Controller
+@RequestMapping("/magazines")
+public class MagazineController {
+
+    @Autowired
+    private MagazineRepository magazineRepository;
+
+
+    @Autowired
+    private SubscribeRepository subscribeRepository;
+
+    @Autowired
+    private SubscriberRepository subscriberRepository;
+
+    @RequestMapping("/all")
+    public String showAllMagazines(final Model model) {
+        model.addAttribute("magazines", magazineRepository.findAll());
+        return "magazine/magazines";
+    }
+
+
+    @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
+    public String subscribe(final Model model, final @RequestParam(required = true, value = "id") Long id) {
+        Magazine magazine = magazineRepository.findById(id);
+        model.addAttribute("magazine", magazine);
+        return "magazine/subscribe";
+    }
+
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
+    public String subscribePost(final HttpServletRequest request, final Model model, final @RequestParam(required = true, value = "id") Long id, final @RequestParam(required = true, value = "endDate") String endDate) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Magazine magazine = magazineRepository.findById(id);
+        Subscriber subscriber = (Subscriber) request.getSession().getAttribute("subscriber");
+        Subscribe subscribe = new Subscribe();
+        subscribe.setStartDate(new Date());
+        Date _endDate = null;
+        try {
+            _endDate = simpleDateFormat.parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        subscribe.setEndDate(_endDate);
+        subscriber.addSubscribe(subscribe);
+        subscribe.setMagazine(magazine);
+        try {
+            subscribeRepository.save(subscribe);
+            subscriberRepository.merge(subscriber);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("magazines", magazineRepository.findAll());
+        return "magazine/magazines";
+    }
+
+}

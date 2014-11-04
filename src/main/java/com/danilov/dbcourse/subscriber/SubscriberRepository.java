@@ -19,14 +19,15 @@ public class SubscriberRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Inject
-    private PasswordEncoder passwordEncoder;
-
     @Transactional
     public Subscriber save(Subscriber subscriber) {
-        subscriber.setPassword(passwordEncoder.encode(subscriber.getPassword()));
         entityManager.persist(subscriber);
         return subscriber;
+    }
+
+    @Transactional
+    public Subscriber merge(Subscriber subscriber) {
+        return entityManager.merge(subscriber);
     }
 
     public Subscriber findByLogin(final String login) {

@@ -10,7 +10,9 @@ import org.springframework.security.core.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService implements UserDetailsService {
 	
 	@Autowired
@@ -18,8 +20,8 @@ public class UserService implements UserDetailsService {
 	
 	@PostConstruct	
 	protected void initialize() {
-		accountRepository.save(new Account("user", "demo", "ROLE_USER"));
-		accountRepository.save(new Account("admin", "admin", "ROLE_ADMIN"));
+//		accountRepository.save(new Account("user", "demo", "ROLE_USER"));
+//		accountRepository.save(new Account("admin", "admin", "ROLE_ADMIN"));
 	}
 	
 	@Override

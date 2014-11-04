@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
 /**
  * Created by Semyon on 04.11.2014.
  */
+@Service
 public class SubscriberService implements UserDetailsService {
 
     @Autowired

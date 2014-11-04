@@ -13,13 +13,10 @@ public class AccountRepository {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	@Inject
-	private PasswordEncoder passwordEncoder;
+
 	
 	@Transactional
 	public Account save(Account account) {
-		account.setPassword(passwordEncoder.encode(account.getPassword()));
 		entityManager.persist(account);
 		return account;
 	}
@@ -34,5 +31,4 @@ public class AccountRepository {
 		}
 	}
 
-	
 }

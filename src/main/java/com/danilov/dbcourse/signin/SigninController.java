@@ -10,4 +10,10 @@ public class SigninController {
 	public String signin() {
         return "signin/signin";
     }
+
+    @RequestMapping(value = "signinSubscriber")
+    public String signinSubs() {
+        return "signin/subsSignin";
+    }
+
 }

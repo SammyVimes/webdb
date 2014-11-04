@@ -54,6 +54,7 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         TemplateResolver templateResolver = new ServletContextTemplateResolver();
         templateResolver.setPrefix(VIEWS);
         templateResolver.setSuffix(".html");
+        templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setTemplateMode("HTML5");
         templateResolver.setCacheable(false);
         return templateResolver;
