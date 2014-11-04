@@ -5,6 +5,7 @@ import com.danilov.dbcourse.subscribe.SubscribeRepository;
 import com.danilov.dbcourse.subscriber.Subscriber;
 import com.danilov.dbcourse.subscriber.SubscriberRepository;
 import com.danilov.dbcourse.subscriber.SubscriberService;
+import com.danilov.dbcourse.support.web.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,6 @@ public class MagazineController {
     @Autowired
     private MagazineRepository magazineRepository;
 
-
     @Autowired
     private SubscribeRepository subscribeRepository;
 
@@ -49,6 +49,23 @@ public class MagazineController {
         return "magazine/subscribe";
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addMagazine(final Model model) {
+        return "magazine/add";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addMagazinePost(final Model model, final @RequestParam(required = true, value = "magazineName") String magazineName) {
+        Magazine magazine = new Magazine();
+        magazine.setName(magazineName);
+        try {
+            magazineRepository.save(magazine);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/magazines/all";
+    }
+
     @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
     public String subscribePost(final HttpServletRequest request, final Model model, final @RequestParam(required = true, value = "id") Long id, final @RequestParam(required = true, value = "endDate") String endDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -56,6 +73,7 @@ public class MagazineController {
         Subscriber subscriber = (Subscriber) request.getSession().getAttribute("subscriber");
         Subscribe subscribe = new Subscribe();
         subscribe.setStartDate(new Date());
+        subscribe.setSubscriber(subscriber);
         Date _endDate = null;
         try {
             _endDate = simpleDateFormat.parse(endDate);
@@ -63,15 +81,16 @@ public class MagazineController {
             e.printStackTrace();
         }
         subscribe.setEndDate(_endDate);
-        subscriber.addSubscribe(subscribe);
         subscribe.setMagazine(magazine);
         try {
             subscribeRepository.save(subscribe);
+            subscriber.addSubscribe(subscribe);
             subscriberRepository.merge(subscriber);
         } catch (Exception e) {
             e.printStackTrace();
         }
         model.addAttribute("magazines", magazineRepository.findAll());
+        model.addAttribute("message", new Message("Подписка оформлена", Message.Type.SUCCESS));
         return "magazine/magazines";
     }
 

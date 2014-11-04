@@ -24,14 +24,22 @@ public class Subscribe {
     @Column
     private Date endDate;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Magazine magazine;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Subscriber subscriber;
 
     public Magazine getMagazine() {
         return magazine;
+    }
+
+    public Subscriber getSubscriber() {
+        return subscriber;
+    }
+
+    public void setSubscriber(final Subscriber subscriber) {
+        this.subscriber = subscriber;
     }
 
     public void setMagazine(final Magazine magazine) {

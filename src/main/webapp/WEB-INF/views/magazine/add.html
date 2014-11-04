@@ -24,14 +24,12 @@
             </div>
         </th:block>
 
-        <div class="row" th:each="magazine : ${magazines}">
-            <div class="col-lg-3">
-                <b><span th:text="${magazine.name}"></span></b>
-            </div>
-            <div class="col-lg-3">
-                <a class="btn btn-primary btn-outline" href="" th:href="@{/magazines/subscribe(id=${magazine.id})}">Подписаться</a>
-            </div>
-        </div>
+        <form method="post">
+            <label for="magazineName">Название журнала</label>
+            <input name="magazineName" id="magazineName"/>
+            <button class="btn btn-success">Добавить</button>
+        </form>
+
     </div>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>
