@@ -40,7 +40,7 @@ public class PostmanRepository {
         }
     }
 
-    public List<Postman> getAll(final String name) {
+    public List<Postman> getAll() {
         try {
             return entityManager.createQuery("select a from Postman a", Postman.class)
                     .getResultList();

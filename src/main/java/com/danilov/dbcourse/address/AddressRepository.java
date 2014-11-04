@@ -83,4 +83,14 @@ public class AddressRepository {
         }
     }
 
+    public Region getById(final long id) {
+        try {
+            return entityManager.createQuery("select a from Region a where id=:id", Region.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            return null;
+        }
+    }
+
 }

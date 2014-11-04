@@ -13,7 +13,7 @@
 <div class="container">
     <div class="text-center">
         <p class="lead">
-            Список регионов
+            Регион №<span th:text="${region.regionNumber}"></span>
         </p>
 
         <th:block th:if="${message != null}">
@@ -23,14 +23,31 @@
             </div>
         </th:block>
 
-        <div class="row" th:each="region : ${regions}">
+        <div class="row" th:each="address : ${addresses}" style="border: 1px solid #000000; padding: 15px;">
             <div class="col-lg-3 col-sm-3 col-md-3">
-                <b>Регион №<span th:text="${region.regionNumber}"></span></b>
+                <b><span th:text="${address.address}"></span></b>
             </div>
             <div class="col-lg-3 col-sm-3 col-md-3">
-                <a class="btn btn-primary btn-outline" href="" th:href="@{/address/edit(id=${region.id})}">Редактировать</a>
+                <a class="btn btn-danger btn-outline" href="" th:href="@{/regions/edit(id=${region.id})}">Удалить</a>
             </div>
         </div>
+
+        <div class="row">
+            <form>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <select name="postman">
+                        <option th:each="postman : ${postmans}" th:value="${postman.id}">
+                            <span th:text="${postman.name}"></span>
+                        </option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <button type="submit" class="btn btn-primary">Установить</button>
+                </div>
+
+            </form>
+        </div>
+
     </div>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>
