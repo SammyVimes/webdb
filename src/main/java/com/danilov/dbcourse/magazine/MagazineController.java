@@ -73,7 +73,6 @@ public class MagazineController {
         Subscriber subscriber = (Subscriber) request.getSession().getAttribute("subscriber");
         Subscribe subscribe = new Subscribe();
         subscribe.setStartDate(new Date());
-        subscribe.setSubscriber(subscriber);
         Date _endDate = null;
         try {
             _endDate = simpleDateFormat.parse(endDate);
@@ -83,7 +82,6 @@ public class MagazineController {
         subscribe.setEndDate(_endDate);
         subscribe.setMagazine(magazine);
         try {
-            subscribeRepository.save(subscribe);
             subscriber.addSubscribe(subscribe);
             subscriberRepository.merge(subscriber);
         } catch (Exception e) {

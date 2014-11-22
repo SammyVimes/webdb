@@ -5,9 +5,9 @@ import org.hibernate.validator.constraints.*;
 public class SignupFormSubscriber {
 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	private static final String EMAIL_MESSAGE = "{email.message}";
+	private static final String LOGIN_MESSAGE = "{login.message}";
 
-    @NotBlank(message = SignupFormSubscriber.NOT_BLANK_MESSAGE)
+    @NotBlank(message = SignupFormSubscriber.LOGIN_MESSAGE)
 	private String login;
 
     @NotBlank(message = SignupFormSubscriber.NOT_BLANK_MESSAGE)

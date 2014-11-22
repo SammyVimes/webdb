@@ -26,6 +26,18 @@ public class Magazine {
     @Column
     private String name;
 
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MagazineType type;
+
+    public MagazineType getType() {
+        return type;
+    }
+
+    public void setType(MagazineType type) {
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }

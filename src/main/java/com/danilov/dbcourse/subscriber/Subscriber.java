@@ -20,8 +20,8 @@ public class Subscriber {
     public static final String FIND_BY_LOGIN = "Subscriber.findByLogin";
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @Column(name = "passport_number")
+    private Long passport;
 
     @Column(unique = true)
     private String login;
@@ -38,7 +38,12 @@ public class Subscriber {
     @Column
     private String patronymic;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @Column
+    private long apartment;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Embedded
+    @CollectionTable(name = "subscriber_subscribes", joinColumns = @JoinColumn(name = "id"))
     private Set<Subscribe> subscribes;
 
     @ManyToOne
@@ -95,8 +100,12 @@ public class Subscriber {
         this.subscribes = subscribes;
     }
 
-    public Long getId() {
-        return id;
+    public Long getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Long passport) {
+        this.passport = passport;
     }
 
     public String getLogin() {

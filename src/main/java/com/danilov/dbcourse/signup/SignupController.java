@@ -34,20 +34,21 @@ public class SignupController {
 	
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
-		model.addAttribute(new SignupFormSubscriber());
+		model.addAttribute("signupForm", new SignupFormSubscriber());
         return SIGNUP_VIEW_NAME;
 	}
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
-	public String signup(@Valid @ModelAttribute SignupFormSubscriber signupForm, Errors errors, RedirectAttributes ra) {
-//		if (errors.hasErrors()) {
-//			return SIGNUP_VIEW_NAME;
-//		}
-//		Account account = accountRepository.save(signupForm.createAccount());
-//		userService.signin(account);
-//        // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
-//        MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:/";
+	public String signup(@Valid @ModelAttribute SignupFormSubscriber signupFormSubscriber, Errors errors, RedirectAttributes ra) {
+        if (errors.hasErrors()) {
+            return SIGNUP_VIEW_NAME;
+        }
+        Subscriber subscriber = new Subscriber(signupFormSubscriber.getLogin(), signupFormSubscriber.getPassword());
+        subscriber = subscriberRepository.save(subscriber);
+        subscriberService.signin(subscriber);
+        // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
+        MessageHelper.addSuccessAttribute(ra, "signup.success");
+        return "redirect:/";
 	}
 
     @RequestMapping(value = "signupSubscriber", method = RequestMethod.POST)

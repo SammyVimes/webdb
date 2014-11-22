@@ -10,13 +10,8 @@ import java.util.Date;
  * Created by Semyon on 04.11.2014.
  */
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "subscribe")
+@Embeddable
 public class Subscribe {
-
-    @Id
-    @GeneratedValue
-    private long id;
 
     @Column
     private Date startDate;
@@ -27,31 +22,12 @@ public class Subscribe {
     @OneToOne(fetch = FetchType.EAGER)
     private Magazine magazine;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Subscriber subscriber;
-
     public Magazine getMagazine() {
         return magazine;
     }
 
-    public Subscriber getSubscriber() {
-        return subscriber;
-    }
-
-    public void setSubscriber(final Subscriber subscriber) {
-        this.subscriber = subscriber;
-    }
-
     public void setMagazine(final Magazine magazine) {
         this.magazine = magazine;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(final long id) {
-        this.id = id;
     }
 
     public Date getEndDate() {

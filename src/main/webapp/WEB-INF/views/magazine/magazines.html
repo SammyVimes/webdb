@@ -24,9 +24,9 @@
             </div>
         </th:block>
 
-        <div class="row" th:each="magazine : ${magazines}">
+        <div class="row" th:each="magazine : ${magazines}" style="margin-top: 15px; padding: 15px; border: 1px solid black;">
             <div class="col-lg-3">
-                <b><span th:text="${magazine.name}"></span></b>
+                <span th:text="${magazine.type.title}"></span><b> <span th:text="${magazine.name}"></span></b>
             </div>
             <div class="col-lg-3">
                 <a class="btn btn-primary btn-outline" href="" th:href="@{/magazines/subscribe(id=${magazine.id})}">Подписаться</a>
