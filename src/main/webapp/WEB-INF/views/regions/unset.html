@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Почтовый сервис</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <p class="lead">
+            Незанятые адреса
+        </p>
+
+        <th:block th:if="${message != null}">
+            <div class="alert alert-dismissable" th:classappend="'alert-' + ${#strings.toLowerCase(message.type)}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <span th:text="${message.message}">Test</span>
+            </div>
+        </th:block>
+
+        <div class="row" th:each="address : ${addresses}">
+            <form action="apply" method="post">
+                <div class="col-lg-3 col-sm-3 col-md-3">
+                    <b>Адрес: <span th:text="${address.address}"></span></b>
+                </div>
+                <input name="addressId" th:value="${address.id}" class="hidden"/>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="col-lg-3 col-sm-3 col-md-3">
+                        <select class="form-control" name="region">
+                            <option class="row" th:each="region : ${regions}" th:value="${region.regionNumber}"><p th:text="${region.regionNumber}"></p></option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Задать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</div>
+</body>
+</html>

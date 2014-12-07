@@ -64,10 +64,29 @@ public class AddressRepository {
         }
     }
 
+    public List<Address> getUnset() {
+        try {
+            return entityManager.createNamedQuery(Address.UNSET, Address.class)
+                    .getResultList();
+        } catch (PersistenceException e) {
+            return null;
+        }
+    }
+
     public Address getByStreet(final String street) {
         try {
             return entityManager.createNamedQuery(Address.BY_STREET, Address.class)
                     .setParameter("address", street)
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            return null;
+        }
+    }
+
+    public Address getAddressById(final Long id) {
+        try {
+            return entityManager.createQuery("select a from Address a where id=:id", Address.class)
+                    .setParameter("id", id)
                     .getSingleResult();
         } catch (PersistenceException e) {
             return null;
@@ -83,7 +102,7 @@ public class AddressRepository {
         }
     }
 
-    public Region getById(final long id) {
+    public Region getRegionById(final Long id) {
         try {
             return entityManager.createQuery("select a from Region a where id=:id", Region.class)
                     .setParameter("id", id)

@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Table(name = "address")
 @NamedQueries({
         @NamedQuery(name = Address.BY_REGION, query = "select a from Address a where region=:region"),
+        @NamedQuery(name = Address.UNSET, query = "select a from Address a where region is null"),
         @NamedQuery(name = Address.BY_STREET, query = "select a from Address a where address=:address")
 })
 public class Address {
@@ -17,6 +18,8 @@ public class Address {
     public static final String BY_REGION = "Address.getByRegion";
 
     public static final String BY_STREET = "Address.getByStreet";
+
+    public static final String UNSET = "Address.unset";
 
     @Id
     @GeneratedValue

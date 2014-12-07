@@ -30,9 +30,25 @@ public class AddressController {
         return "regions/regions";
     }
 
+    @RequestMapping("/unset")
+    public String showUnset(final Model model) {
+        model.addAttribute("addresses", addressRepository.getUnset());
+        model.addAttribute("regions", addressRepository.getAllRegions());
+        return "regions/unset";
+    }
+
+    @RequestMapping(value = "/apply", method = RequestMethod.POST)
+    public String apply(final Model model, @RequestParam(required = true, value = "addressId")final Long addressId, @RequestParam(required = true, value = "region")final Long regionId) {
+        Region region = addressRepository.getRegionById(regionId);
+        Address address = addressRepository.getAddressById(addressId);
+        address.setRegion(region);
+        addressRepository.updateAddress(address);
+        return "regions/unset";
+    }
+
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editGet(final Model model, final @RequestParam(required = true, value="id") Long id) {
-        Region region = addressRepository.getById(id);
+        Region region = addressRepository.getRegionById(id);
         List<Address> addresses = addressRepository.getByRegion(region);
         model.addAttribute("addresses", addresses);
         model.addAttribute("region", region);
