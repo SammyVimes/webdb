@@ -2,6 +2,8 @@ package com.danilov.dbcourse.signup;
 
 import javax.validation.Valid;
 
+import com.danilov.dbcourse.address.Address;
+import com.danilov.dbcourse.address.AddressRepository;
 import com.danilov.dbcourse.subscriber.Subscriber;
 import com.danilov.dbcourse.subscriber.SubscriberRepository;
 import com.danilov.dbcourse.subscriber.SubscriberService;
@@ -31,6 +33,9 @@ public class SignupController {
 
     @Autowired
     private SubscriberService subscriberService;
+
+    @Autowired
+    private AddressRepository addressRepository;
 	
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
@@ -39,11 +44,19 @@ public class SignupController {
 	}
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
-	public String signup(@Valid @ModelAttribute SignupFormSubscriber signupFormSubscriber, Errors errors, RedirectAttributes ra) {
+	public String signup(@Valid @ModelAttribute SignupFormSubscriber form, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             return SIGNUP_VIEW_NAME;
         }
-        Subscriber subscriber = new Subscriber(signupFormSubscriber.getLogin(), signupFormSubscriber.getPassword());
+        Subscriber subscriber = new Subscriber(form.getLogin(), form.getPassword());
+        Address address = addressRepository.getByStreet(form.getAddress());
+        if (address == null) {
+            address = new Address();
+            address.setAddress(form.getAddress());
+            addressRepository.saveAddress(address);
+        }
+        subscriber.setAddress(address);
+        subscriber.setPassport(form.getPassport());
         subscriber = subscriberRepository.save(subscriber);
         subscriberService.signin(subscriber);
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
@@ -52,11 +65,18 @@ public class SignupController {
 	}
 
     @RequestMapping(value = "signupSubscriber", method = RequestMethod.POST)
-    public String signupSubscriber(@Valid @ModelAttribute SignupFormSubscriber signupFormSubscriber, Errors errors, RedirectAttributes ra) {
+    public String signupSubscriber(@Valid @ModelAttribute SignupFormSubscriber form, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             return SIGNUP_VIEW_NAME;
         }
-        Subscriber subscriber = new Subscriber(signupFormSubscriber.getLogin(), signupFormSubscriber.getPassword());
+        Subscriber subscriber = new Subscriber(form.getLogin(), form.getPassword());
+        Address address = addressRepository.getByStreet(form.getAddress());
+        if (address == null) {
+            address = new Address();
+            address.setAddress(form.getAddress());
+            addressRepository.saveAddress(address);
+        }
+        subscriber.setAddress(address);
         subscriber = subscriberRepository.save(subscriber);
         subscriberService.signin(subscriber);
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html

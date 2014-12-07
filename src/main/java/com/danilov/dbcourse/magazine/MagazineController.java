@@ -55,9 +55,12 @@ public class MagazineController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addMagazinePost(final Model model, final @RequestParam(required = true, value = "magazineName") String magazineName) {
+    public String addMagazinePost(final Model model, final @RequestParam(required = true, value = "magazineName") String magazineName,
+                                  @RequestParam(required = true, value = "type") final String magazineType) {
         Magazine magazine = new Magazine();
         magazine.setName(magazineName);
+        MagazineType type = MagazineType.valueOf(magazineType);
+        magazine.setType(type);
         try {
             magazineRepository.save(magazine);
         } catch (Exception e) {

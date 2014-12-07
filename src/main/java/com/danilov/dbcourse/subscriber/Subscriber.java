@@ -132,6 +132,14 @@ public class Subscriber {
         this.password = password;
     }
 
+    public long getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(final long apartment) {
+        this.apartment = apartment;
+    }
+
     public void addSubscribe(final Subscribe subscribe) {
         if (subscribes == null) {
             subscribes = new HashSet<>();
