@@ -1,7 +1,6 @@
 package com.danilov.dbcourse.subscribe;
 
 import com.danilov.dbcourse.magazine.Magazine;
-import com.danilov.dbcourse.subscriber.Subscriber;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,7 +18,7 @@ public class Subscribe {
     @Column
     private Date endDate;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Magazine magazine;
 
     public Magazine getMagazine() {

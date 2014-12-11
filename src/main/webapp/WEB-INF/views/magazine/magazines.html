@@ -17,6 +17,8 @@
             Список изданий
         </p>
 
+        <a href="" th:href="@{/magazines/add}" class="btn btn-primary">Добавить</a>
+
         <th:block th:if="${message != null}">
             <div class="alert alert-dismissable" th:classappend="'alert-' + ${#strings.toLowerCase(message.type)}">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
