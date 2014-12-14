@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Почтовый сервис</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <h1>Главная страница</h1>
+        <p class="lead">
+            Список почтальонов
+        </p>
 
+        <a href="" th:href="@{/postmans/add}" class="btn btn-primary">Добавить</a>
+
+        <th:block th:if="${message != null}">
+            <div class="alert alert-dismissable" th:classappend="'alert-' + ${#strings.toLowerCase(message.type)}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <span th:text="${message.message}">Test</span>
+            </div>
+        </th:block>
+
+        <div class="row" th:each="postman : ${postmans}" style="margin-top: 15px; padding: 15px; border: 1px solid black;">
+            <div class="col-lg-3">
+                <b> <span th:text="${postman.name}"></span></b>
+            </div>
+            <div class="col-lg-3">
+                <a class="btn btn-primary btn-outline" href="" th:href="@{/postmans/delete(id=${postman.passport})}">Уволить</a>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</div>
 </body>
 </html>

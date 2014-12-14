@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Почтовый сервис</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <h1>Главная страница</h1>
+        <p class="lead">
+            Добавление почтальона
+        </p>
 
+        <th:block th:if="${message != null}">
+            <div class="alert alert-dismissable" th:classappend="'alert-' + ${#strings.toLowerCase(message.type)}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <span th:text="${message.message}">Test</span>
+            </div>
+        </th:block>
+
+        <form method="post">
+            <label for="postmanName">Имя почтальона</label>
+            <input name="postmanName" id="postmanName"/>
+
+
+            <label for="passportNumber">Номер паспорта</label>
+            <input name="passportNumber" id="passportNumber"/>
+
+            <button class="btn btn-success">Добавить</button>
+        </form>
+
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</div>
 </body>
 </html>
