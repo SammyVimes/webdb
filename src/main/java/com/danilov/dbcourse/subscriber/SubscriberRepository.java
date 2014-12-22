@@ -40,4 +40,17 @@ public class SubscriberRepository {
         }
     }
 
+
+    public Subscriber findByAll(final String name, final String surname, final String patronymic) {
+        try {
+            return entityManager.createQuery("select a from Subscriber a where name=:name and surname=:surname and patronymic=:patronymic", Subscriber.class)
+                    .setParameter("name", name)
+                    .setParameter("surname", surname)
+                    .setParameter("patronymic", patronymic)
+                    .getSingleResult();
+        } catch (PersistenceException e) {
+            return null;
+        }
+    }
+
 }

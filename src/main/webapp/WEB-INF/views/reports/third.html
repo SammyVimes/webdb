@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Почтовый сервис</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <p class="lead">
+            По заданному адресу определить фамилию почтальона,  обслуживающего подписчика
+        </p>
+
+        <div th:if="${name != null}">
+            Имя: <span th:text="${surname} "></span>
+            <span th:text="${name} "></span>
+            <span th:text="${patronymic}"></span>
+        </div>
+
+        <form action="" th:action="@{/secured/reports/third}" method="get">
+
+            <label for="name">Имя</label>
+            <input type="text" id="name" name="name" placeholder="Имя"/>
+
+            <label for="surname">Фамилия</label>
+            <input type="text" id="surname" name="surname" placeholder="Фамилия"/>
+
+            <label for="patronymic">Отчество</label>
+            <input type="text" id="patronymic" name="patronymic" placeholder="Отчество"/>
+
+            <button type="submit" id="start" class="btn btn-primary">Определить</button>
+
+        </form>
+
+        <div class="row" th:each="subscribe : ${subscribes}" style="margin-top: 20px; border: 1px solid black; padding: 10px;">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <b><span th:text="${subscribe.magazine.name}"></span></b>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                Подписка оформлена: <div th:text="${subscribe.startDate}"></div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                Подписка заканчивается: <div th:text="${subscribe.endDate}"></div>
+            </div>
+        </div>
+
+
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</div>
+</body>
+</html>

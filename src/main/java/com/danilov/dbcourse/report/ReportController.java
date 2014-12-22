@@ -6,6 +6,8 @@ import com.danilov.dbcourse.magazine.Magazine;
 import com.danilov.dbcourse.magazine.MagazineRepository;
 import com.danilov.dbcourse.subscribe.Subscribe;
 import com.danilov.dbcourse.subscribe.SubscribeRepository;
+import com.danilov.dbcourse.subscriber.Subscriber;
+import com.danilov.dbcourse.subscriber.SubscriberRepository;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,9 @@ public class ReportController {
 
     @Autowired
     private SubscribeRepository subscribeRepository;
+
+    @Autowired
+    private SubscriberRepository subscriberRepository;
 
     @Autowired
     private MagazineRepository magazineRepository;
@@ -61,6 +66,21 @@ public class ReportController {
     public String secondView() {
         return "reports/second";
     }
+
+    @RequestMapping("/third")
+    public String third(final Model model, final @RequestParam(required = false) String name, final @RequestParam(required = false) String surname, final @RequestParam(required = false) String patronymic) {
+        if (name != null) {
+            model.addAttribute("name", name);
+            model.addAttribute("surname", surname);
+            model.addAttribute("patronymic", patronymic);
+            Subscriber subscriber = subscriberRepository.findByAll(name, surname, patronymic);
+            if (subscriber != null) {
+                model.addAttribute("subscribes", subscriber.getSubscribes());
+            }
+        }
+        return "reports/third";
+    }
+
 
     @RequestMapping(value = "/second", produces = "application/json")
     @ResponseBody
