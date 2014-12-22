@@ -46,7 +46,7 @@
         <br/>
         <div class="row">
             <div class="col-lg-12">
-                <a href="#" th:href="@{/secured/reports/six}" class="btn btn-primary">Каков средний срок подписки по каждому изданию?</a>
+                <a href="#" id="six" class="btn btn-primary">Каков средний срок подписки по каждому изданию?</a>
             </div>
         </div>
         <br/>
@@ -75,6 +75,15 @@
                     contentType: "application/json",
                     dataType: "json",
                     url: "/secured/reports/fifth"
+                }).done(function(data) {
+                    alert(data.result);
+                });
+            });
+            $("#six").click(function() {
+                $.ajax({
+                    contentType: "application/json",
+                    dataType: "json",
+                    url: "/secured/reports/six"
                 }).done(function(data) {
                     alert(data.result);
                 });

@@ -137,4 +137,35 @@ public class ReportController {
         return jsonObject;
     }
 
+    @RequestMapping(value = "/six", produces = "application/json")
+    @ResponseBody
+    public JSONObject six() {
+        JSONObject jsonObject = new JSONObject();
+
+        List<Magazine> magazines = magazineRepository.findAll();
+        List<Pair> pairs = new LinkedList<>();
+
+        String result = "";
+
+        for (Magazine magazine : magazines) {
+            List<Subscribe> subscribes = subscribeRepository.subscribesByMagazine(magazine);
+            int days = 0;
+            for (Subscribe subscribe : subscribes) {
+                Date start = subscribe.getStartDate();
+                Date end = subscribe.getEndDate();
+                long millis = end.getTime() - start.getTime();
+                int _days = (int) (millis / (1000 * 60 * 60 * 24));
+                days += _days;
+            }
+            int average = days / subscribes.size();
+            result += "Издание: " + magazine.getName();
+            result += ", среднее время подписки: " + average + "\n";
+            Pair p = new Pair();
+            p.first = magazine;
+            p.second = days;
+        }
+        jsonObject.put("result", result);
+        return jsonObject;
+    }
+
 }

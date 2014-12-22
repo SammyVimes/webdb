@@ -35,9 +35,23 @@ public class SubscribeRepository {
         return entityManager.merge(subscribe);
     }
 
+    public List<Subscribe> subscribesByMagazine(final Magazine magazine) {
+        List<Subscriber> subscribers = entityManager.createQuery("select a from Subscriber a join a.subscribes m where m.magazine=:magazine", Subscriber.class).setParameter("magazine", magazine).getResultList();
+        List<Subscribe> subscribes = new ArrayList<>(subscribers.size());
+
+        for (Subscriber s : subscribers) {
+            Set<Subscribe> subscribeList = s.getSubscribes();
+            for (Subscribe subscribe : subscribeList) {
+                if (subscribe.getMagazine().equals(magazine)) {
+                    subscribes.add(subscribe);
+                    break;
+                }
+            }
+        }
+        return subscribes;
+    }
+
     public List<Subscribe> subscribesByMagazineAndTillDate(final Magazine magazine, final Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String frmDate = format.format(date);
         List<Subscriber> subscribers = entityManager.createQuery("select a from Subscriber a join a.subscribes m where m.magazine=:magazine", Subscriber.class).setParameter("magazine", magazine).getResultList();
         List<Subscribe> subscribes = new ArrayList<>(subscribers.size());
 
