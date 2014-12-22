@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Почтовый сервис</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <p class="lead">
+            По заданному адресу определить фамилию почтальона,  обслуживающего подписчика
+        </p>
+
+        <label for="street">Улица</label>
+        <input type="text" id="street" placeholder="Улица"/>
+
+
+        <label for="house">Дом</label>
+        <input type="text" id="house" placeholder="Дом"/>
+
+        <div id="start" class="btn btn-primary">Определить</div>
+
+        <script>
+            //<![CDATA[
+            // content of your Javascript goes here
+            $(document).ready(function() {
+
+                var $street = $("#street");
+                var $house = $("#house");
+                var $result = $("#result");
+
+                var $name = $("#name");
+                var $passport = $("#passport");
+                $("#start").click(function() {
+                    $result.addClass("invisible");
+                    $.ajax({
+                        contentType: "application/json",
+                        dataType: "json",
+                        url: "/secured/reports/second?street=" + $street.val() + "&house=" + $house.val()
+                    }).done(function(data) {
+                        if (data && data.result) {
+                            var postman = data.result.region.postman;
+                            var name = postman.name;
+                            var passport = postman.passport;
+                            $name.text(name);
+                            $passport.text(passport);
+                            $result.removeClass("invisible");
+                        } else {
+                            $name.text("Не найден");
+                            $passport.text("Не найден");
+                            $result.removeClass("invisible");
+                        }
+                    })
+                });
+
+            });
+            //]]>
+        </script>
+
+        <div class="row">
+            <div class="col-lg-12 invisible" id="result">
+                Имя: <span id="name"></span>
+                <br/>
+                Паспорт: <span id="passport"></span>
+            </div>
+        </div>
+
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</div>
+</body>
+</html>

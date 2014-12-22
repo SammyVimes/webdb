@@ -43,7 +43,7 @@ public class AddressController {
         Address address = addressRepository.getAddressById(addressId);
         address.setRegion(region);
         addressRepository.updateAddress(address);
-        return "regions/unset";
+        return "redirect:/address/unset";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
