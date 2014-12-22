@@ -4,6 +4,7 @@ import com.danilov.dbcourse.Pair;
 import com.danilov.dbcourse.address.AddressRepository;
 import com.danilov.dbcourse.magazine.Magazine;
 import com.danilov.dbcourse.magazine.MagazineRepository;
+import com.danilov.dbcourse.postman.PostmanRepository;
 import com.danilov.dbcourse.subscribe.Subscribe;
 import com.danilov.dbcourse.subscribe.SubscribeRepository;
 import com.danilov.dbcourse.subscriber.Subscriber;
@@ -39,6 +40,9 @@ public class ReportController {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private PostmanRepository postmanRepository;
 
     @RequestMapping("")
     public String all(final HttpServletRequest request) {
@@ -87,6 +91,14 @@ public class ReportController {
     public JSONObject secondJSON(final @RequestParam() String street, final @RequestParam() String house) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", addressRepository.getByStreet(street, house));
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/fourth", produces = "application/json")
+    @ResponseBody
+    public JSONObject fourth() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result", postmanRepository.getAll().size());
         return jsonObject;
     }
 
