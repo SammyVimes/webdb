@@ -73,10 +73,11 @@ public class AddressRepository {
         }
     }
 
-    public Address getByStreet(final String street) {
+    public Address getByStreet(final String street, final String house) {
         try {
             return entityManager.createNamedQuery(Address.BY_STREET, Address.class)
-                    .setParameter("address", street)
+                    .setParameter("street", street)
+                    .setParameter("house", house)
                     .getSingleResult();
         } catch (PersistenceException e) {
             return null;

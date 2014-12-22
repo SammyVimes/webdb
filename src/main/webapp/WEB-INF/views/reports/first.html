@@ -12,25 +12,15 @@
 <div th:replace="fragments/header :: header">Header</div>
 <div class="container">
     <div class="text-center">
-        <p class="lead">
-            Список регионов
-        </p>
+        <h1>Определить наименование и количество экземпляров  всех  изданий, получаемых отделением связи</h1>
 
-        <th:block th:if="${message != null}">
-            <div class="alert alert-dismissable" th:classappend="'alert-' + ${#strings.toLowerCase(message.type)}">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <span th:text="${message.message}">Test</span>
-            </div>
-        </th:block>
 
-        <div class="row" th:each="region : ${regions}">
-            <div class="col-lg-3 col-sm-3 col-md-3">
-                <b>Регион №<span th:text="${region.regionNumber}"></span></b>
-            </div>
-            <div class="col-lg-3 col-sm-3 col-md-3">
-                <a class="btn btn-primary btn-outline" href="" th:href="@{/street/edit(id=${region.id})}">Редактировать</a>
+        <div class="row" th:each="pair : ${pairs}" style="margin-top: 15px; padding: 15px; border: 1px solid black;">
+            <div class="col-lg-3">
+                <span th:text="${pair.first.type.title}"></span><b> <span th:text="${pair.first.name}"></span></b>, количество: <span th:text="${pair.second}"></span>
             </div>
         </div>
+
     </div>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>

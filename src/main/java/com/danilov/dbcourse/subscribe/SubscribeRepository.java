@@ -1,5 +1,6 @@
 package com.danilov.dbcourse.subscribe;
 
+import com.danilov.dbcourse.magazine.Magazine;
 import com.danilov.dbcourse.subscriber.Subscriber;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Semyon on 04.11.2014.
@@ -27,6 +33,27 @@ public class SubscribeRepository {
     @Transactional
     public Subscribe merge(Subscribe subscribe) {
         return entityManager.merge(subscribe);
+    }
+
+    public List<Subscribe> subscribesByMagazineAndTillDate(final Magazine magazine, final Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String frmDate = format.format(date);
+        List<Subscriber> subscribers = entityManager.createQuery("select a from Subscriber a join a.subscribes m where m.magazine=:magazine", Subscriber.class).setParameter("magazine", magazine).getResultList();
+        List<Subscribe> subscribes = new ArrayList<>(subscribers.size());
+
+
+        for (Subscriber s : subscribers) {
+            Set<Subscribe> subscribeList = s.getSubscribes();
+            for (Subscribe subscribe : subscribeList) {
+                if (subscribe.getMagazine().equals(magazine)) {
+                    if (subscribe.getEndDate().after(date)) {
+                        subscribes.add(subscribe);
+                    }
+                    break;
+                }
+            }
+        }
+        return subscribes;
     }
 
 }

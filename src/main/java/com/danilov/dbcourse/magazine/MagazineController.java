@@ -56,9 +56,11 @@ public class MagazineController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addMagazinePost(final Model model, final @RequestParam(required = true, value = "magazineName") String magazineName,
-                                  @RequestParam(required = true, value = "type") final String magazineType) {
+                                  @RequestParam(required = true, value = "type") final String magazineType,
+                                  @RequestParam(required = true, value = "price") final int price) {
         Magazine magazine = new Magazine();
         magazine.setName(magazineName);
+        magazine.setPrice(price);
         MagazineType type = MagazineType.valueOf(magazineType);
         magazine.setType(type);
         try {

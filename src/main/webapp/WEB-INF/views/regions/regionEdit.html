@@ -23,9 +23,9 @@
             </div>
         </th:block>
 
-        <div class="row" th:each="address : ${addresses}" style="border: 1px solid #000000; padding: 15px;">
+        <div class="row" th:each="street : ${addresses}" style="border: 1px solid #000000; padding: 15px;">
             <div class="col-lg-3 col-sm-3 col-md-3">
-                <b><span th:text="${address.address}"></span></b>
+                <b><span th:text="${street.street}"></span></b>
             </div>
             <div class="col-lg-3 col-sm-3 col-md-3">
                 <a class="btn btn-danger btn-outline" href="" th:href="@{/regions/edit(id=${region.id})}">Удалить</a>
@@ -36,7 +36,7 @@
             <form>
                 <div class="col-lg-4 col-md-4 col-sm-4">
                     <select name="postman">
-                        <option th:each="postman : ${postmans}" th:value="${postman.id}">
+                        <option th:each="postman : ${postmans}" th:value="${postman.passport}">
                             <span th:text="${postman.name}"></span>
                         </option>
                     </select>

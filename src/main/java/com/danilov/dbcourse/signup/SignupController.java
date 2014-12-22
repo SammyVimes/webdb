@@ -49,10 +49,11 @@ public class SignupController {
             return SIGNUP_VIEW_NAME;
         }
         Subscriber subscriber = new Subscriber(form.getLogin(), form.getPassword());
-        Address address = addressRepository.getByStreet(form.getAddress());
+        Address address = addressRepository.getByStreet(form.getStreet(), form.getHouse());
         if (address == null) {
             address = new Address();
-            address.setAddress(form.getAddress());
+            address.setStreet(form.getStreet());
+            address.setHouse(form.getHouse());
             addressRepository.saveAddress(address);
         }
         subscriber.setAddress(address);
@@ -70,10 +71,11 @@ public class SignupController {
             return SIGNUP_VIEW_NAME;
         }
         Subscriber subscriber = new Subscriber(form.getLogin(), form.getPassword());
-        Address address = addressRepository.getByStreet(form.getAddress());
+        Address address = addressRepository.getByStreet(form.getStreet(), form.getHouse());
         if (address == null) {
             address = new Address();
-            address.setAddress(form.getAddress());
+            address.setStreet(form.getStreet());
+            address.setHouse(form.getHouse());
             addressRepository.saveAddress(address);
         }
         subscriber.setAddress(address);

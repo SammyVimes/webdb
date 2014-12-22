@@ -7,11 +7,13 @@ import javax.persistence.*;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "address")
+@Table(name = "street",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames = {"street", "house"}))
 @NamedQueries({
         @NamedQuery(name = Address.BY_REGION, query = "select a from Address a where region=:region"),
         @NamedQuery(name = Address.UNSET, query = "select a from Address a where region is null"),
-        @NamedQuery(name = Address.BY_STREET, query = "select a from Address a where address=:address")
+        @NamedQuery(name = Address.BY_STREET, query = "select a from Address a where street=:street and house=:house")
 })
 public class Address {
 
@@ -25,11 +27,20 @@ public class Address {
     @GeneratedValue
     private long id;
 
-    @Column(unique = true)
-    private String address;
+    private String street;
+
+    private String house;
 
     @ManyToOne
     private Region region;
+
+    public String getHouse() {
+        return house;
+    }
+
+    public void setHouse(final String house) {
+        this.house = house;
+    }
 
     public long getId() {
         return id;
@@ -39,12 +50,12 @@ public class Address {
         this.id = id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(final String address) {
-        this.address = address;
+    public void setStreet(final String street) {
+        this.street = street;
     }
 
     public Region getRegion() {

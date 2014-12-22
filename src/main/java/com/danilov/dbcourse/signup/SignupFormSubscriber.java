@@ -14,11 +14,22 @@ public class SignupFormSubscriber {
 	private String password;
 
     @NotBlank(message = SignupFormSubscriber.NOT_BLANK_MESSAGE)
-    private String address;
+    private String street;
+
+    @NotBlank(message = SignupFormSubscriber.NOT_BLANK_MESSAGE)
+    private String house;
 
     private Long appartment;
 
     private Long passport;
+
+    public String getHouse() {
+        return house;
+    }
+
+    public void setHouse(final String house) {
+        this.house = house;
+    }
 
     public Long getPassport() {
         return passport;
@@ -52,11 +63,11 @@ public class SignupFormSubscriber {
         this.appartment = appartment;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(final String address) {
-        this.address = address;
+    public void setStreet(final String street) {
+        this.street = street;
     }
 }

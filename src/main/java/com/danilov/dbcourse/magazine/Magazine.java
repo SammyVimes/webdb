@@ -26,9 +26,20 @@ public class Magazine {
     @Column
     private String name;
 
+    @Column
+    private int price;
+
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private MagazineType type;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(final int price) {
+        this.price = price;
+    }
 
     public MagazineType getType() {
         return type;
@@ -53,4 +64,29 @@ public class Magazine {
     public void setId(final long id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Magazine magazine = (Magazine) o;
+
+        if (id != magazine.id) return false;
+        if (price != magazine.price) return false;
+        if (name != null ? !name.equals(magazine.name) : magazine.name != null) return false;
+        if (type != magazine.type) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + price;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
+
 }
