@@ -1,5 +1,6 @@
 package com.danilov.dbcourse.subscriber;
 
+import com.danilov.dbcourse.address.Address;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 /**
  * Created by Semyon on 04.11.2014.
@@ -35,6 +37,16 @@ public class SubscriberRepository {
             return entityManager.createNamedQuery(Subscriber.FIND_BY_LOGIN, Subscriber.class)
                     .setParameter("login", login)
                     .getSingleResult();
+        } catch (PersistenceException e) {
+            return null;
+        }
+    }
+
+    public List<Subscriber> findByAddress(final Address address) {
+        try {
+            return entityManager.createQuery("select a from Subscriber a where address=:address", Subscriber.class)
+                    .setParameter("address", address)
+                    .getResultList();
         } catch (PersistenceException e) {
             return null;
         }

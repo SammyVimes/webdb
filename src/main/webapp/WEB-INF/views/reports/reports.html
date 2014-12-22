@@ -40,7 +40,7 @@
         <br/>
         <div class="row">
             <div class="col-lg-12">
-                <a href="#" th:href="@{/secured/reports/fifth}" class="btn btn-primary">На каком участке количество экземпляров  подписных изданий максимально?</a>
+                <a href="#" id="fifth" class="btn btn-primary">На каком участке количество экземпляров  подписных изданий максимально?</a>
             </div>
         </div>
         <br/>
@@ -66,6 +66,15 @@
                     contentType: "application/json",
                     dataType: "json",
                     url: "/secured/reports/fourth"
+                }).done(function(data) {
+                    alert(data.result);
+                });
+            });
+            $("#fifth").click(function() {
+                $.ajax({
+                    contentType: "application/json",
+                    dataType: "json",
+                    url: "/secured/reports/fifth"
                 }).done(function(data) {
                     alert(data.result);
                 });

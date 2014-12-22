@@ -1,7 +1,9 @@
 package com.danilov.dbcourse.report;
 
 import com.danilov.dbcourse.Pair;
+import com.danilov.dbcourse.address.Address;
 import com.danilov.dbcourse.address.AddressRepository;
+import com.danilov.dbcourse.address.Region;
 import com.danilov.dbcourse.magazine.Magazine;
 import com.danilov.dbcourse.magazine.MagazineRepository;
 import com.danilov.dbcourse.postman.PostmanRepository;
@@ -99,6 +101,39 @@ public class ReportController {
     public JSONObject fourth() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", postmanRepository.getAll().size());
+        return jsonObject;
+    }
+
+
+    @RequestMapping(value = "/fifth", produces = "application/json")
+    @ResponseBody
+    public JSONObject fifth() {
+        JSONObject jsonObject = new JSONObject();
+        List<Region> regions = addressRepository.getAllRegions();
+
+        long regionNumber = -1;
+        int quantity = -1;
+
+        for (Region region : regions) {
+            List<Address> addresses = addressRepository.getByRegion(region);
+            int quantityByRegion = 0;
+            for (Address address : addresses) {
+                List<Subscriber> subscribers = subscriberRepository.findByAddress(address);
+                for (Subscriber subscriber : subscribers) {
+                    List<Subscribe> subscribes = subscriber.getActualSubscribes();
+                    quantityByRegion += subscribes.size();
+                }
+            }
+            if (quantity == -1 || quantity < quantityByRegion) {
+                quantity = quantityByRegion;
+                regionNumber = region.getRegionNumber();
+            }
+        }
+        if (regionNumber != -1) {
+            jsonObject.put("result", "Максимальное количество на участке номер: " + regionNumber);
+        } else {
+            jsonObject.put("result", "Никто ничего не выписывает");
+        }
         return jsonObject;
     }
 

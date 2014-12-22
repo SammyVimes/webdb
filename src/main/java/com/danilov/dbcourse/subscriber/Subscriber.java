@@ -5,8 +5,7 @@ import com.danilov.dbcourse.subscribe.Subscribe;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Semyon on 04.11.2014.
@@ -138,6 +137,17 @@ public class Subscriber {
 
     public void setApartment(final long apartment) {
         this.apartment = apartment;
+    }
+
+    public List<Subscribe> getActualSubscribes() {
+        List<Subscribe> subscribes1 = new ArrayList<>();
+        Date d = new Date();
+        for (Subscribe subscribe : subscribes) {
+            if (subscribe.getEndDate().after(d)) {
+                subscribes1.add(subscribe);
+            }
+        }
+        return subscribes1;
     }
 
     public void addSubscribe(final Subscribe subscribe) {
