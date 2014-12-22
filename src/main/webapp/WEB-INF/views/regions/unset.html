@@ -27,6 +27,7 @@
             <form action="apply" method="post">
                 <div class="col-lg-3 col-sm-3 col-md-3">
                     <b>Адрес: <span th:text="${street.street}"></span></b>
+                    <b>Дом: <span th:text="${street.house}"></span></b>
                 </div>
                 <input name="addressId" th:value="${street.id}" class="hidden"/>
                 <div class="col-lg-6 col-sm-6 col-md-6">
