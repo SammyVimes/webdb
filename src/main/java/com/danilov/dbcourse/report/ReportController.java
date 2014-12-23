@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Semyon on 21.12.2014.
@@ -143,7 +141,6 @@ public class ReportController {
         JSONObject jsonObject = new JSONObject();
 
         List<Magazine> magazines = magazineRepository.findAll();
-        List<Pair> pairs = new LinkedList<>();
 
         String result = "";
 
@@ -160,12 +157,136 @@ public class ReportController {
             int average = days / subscribes.size();
             result += "Издание: " + magazine.getName();
             result += ", среднее время подписки: " + average + "\n";
-            Pair p = new Pair();
-            p.first = magazine;
-            p.second = days;
         }
         jsonObject.put("result", result);
         return jsonObject;
+    }
+
+    @RequestMapping(value = "/global")
+    public String global(final Model model) {
+        List<Region> regions = addressRepository.getAllRegions();
+
+        List<Magazine> magazines = magazineRepository.findAll();
+        for (Region region : regions) {
+            Tuple tuple = new Tuple();
+
+            tuple.third = region;
+
+            tuple.first = region.getPostman();
+
+            List<Triple> magazineToSubscribesList = new ArrayList<>();
+            tuple.second = magazineToSubscribesList;
+
+            for (Magazine magazine : magazines) {
+                List<Subscriber> subscribers = subscribeRepository.subscribersByMagazineAndRegion(magazine, region);
+                if (subscribers.isEmpty()) {
+                    continue;
+                }
+                Triple magazineToSubscribes = new Triple();
+                magazineToSubscribesList.add(magazineToSubscribes);
+                List<Pair> pairs = new LinkedList<>();
+
+                //данные по изданию, фёст = жернал, секонд - подписчик и его подписка
+                magazineToSubscribes.first = magazine;
+                magazineToSubscribes.second = pairs;
+
+                int days = 0;
+                int subscribesQuantity = 0;
+                for (Subscriber subscriber : subscribers) {
+                    Pair pair = new Pair();
+                    pair.first = subscriber;
+                    for (Subscribe subscribe : subscriber.getActualSubscribes()) {
+                        if (subscribe.getMagazine().equals(magazine)) {
+                            pair.second = subscribe;
+                            pairs.add(pair);
+                            subscribesQuantity++;
+                            days += (subscribe.getEndDate().getTime() - subscribe.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
+                            break;
+                        }
+                    }
+                }
+                magazineToSubscribes.third = days / subscribesQuantity;
+            }
+
+        }
+        return "reports/global";
+    }
+
+    private class Triple {
+
+        private Object first;
+
+        private Object second;
+
+        private Object third;
+
+        public Object getFirst() {
+            return first;
+        }
+
+        public void setFirst(final Object first) {
+            this.first = first;
+        }
+
+        public Object getSecond() {
+            return second;
+        }
+
+        public void setSecond(final Object second) {
+            this.second = second;
+        }
+
+        public Object getThird() {
+            return third;
+        }
+
+        public void setThird(final Object third) {
+            this.third = third;
+        }
+
+    }
+
+    private class Tuple {
+
+        private Object first;
+
+        private Object second;
+
+        private Object third;
+
+        private Object fourth;
+
+        public Object getFirst() {
+            return first;
+        }
+
+        public void setFirst(final Object first) {
+            this.first = first;
+        }
+
+        public Object getSecond() {
+            return second;
+        }
+
+        public void setSecond(final Object second) {
+            this.second = second;
+        }
+
+        public Object getThird() {
+            return third;
+        }
+
+        public void setThird(final Object third) {
+            this.third = third;
+        }
+
+        public Object getFourth() {
+            return fourth;
+        }
+
+        public void setFourth(final Object fourth) {
+            this.fourth = fourth;
+        }
     }
 
 }

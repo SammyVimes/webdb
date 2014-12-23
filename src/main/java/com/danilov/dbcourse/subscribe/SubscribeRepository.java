@@ -1,5 +1,6 @@
 package com.danilov.dbcourse.subscribe;
 
+import com.danilov.dbcourse.address.Region;
 import com.danilov.dbcourse.magazine.Magazine;
 import com.danilov.dbcourse.subscriber.Subscriber;
 import org.springframework.stereotype.Repository;
@@ -49,6 +50,15 @@ public class SubscribeRepository {
             }
         }
         return subscribes;
+    }
+
+
+    public List<Subscriber> subscribersByMagazineAndRegion(final Magazine magazine, final Region region) {
+        List<Subscriber> subscribers = entityManager.createQuery("select a from Subscriber a join a.subscribes m where m.magazine=:magazine and a.address.region=:region", Subscriber.class)
+                .setParameter("magazine", magazine)
+                .setParameter("region", region)
+                .getResultList();
+        return subscribers;
     }
 
     public List<Subscribe> subscribesByMagazineAndTillDate(final Magazine magazine, final Date date) {
