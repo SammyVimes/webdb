@@ -6,6 +6,7 @@ import com.danilov.dbcourse.address.AddressRepository;
 import com.danilov.dbcourse.address.Region;
 import com.danilov.dbcourse.magazine.Magazine;
 import com.danilov.dbcourse.magazine.MagazineRepository;
+import com.danilov.dbcourse.postman.Postman;
 import com.danilov.dbcourse.postman.PostmanRepository;
 import com.danilov.dbcourse.subscribe.Subscribe;
 import com.danilov.dbcourse.subscribe.SubscribeRepository;
@@ -167,6 +168,9 @@ public class ReportController {
         List<Region> regions = addressRepository.getAllRegions();
 
         List<Magazine> magazines = magazineRepository.findAll();
+
+        List<Postman> postmans = postmanRepository.getAll();
+
         List<Tuple> tuples = new LinkedList<>();
         for (Region region : regions) {
             Tuple tuple = new Tuple();
@@ -176,15 +180,15 @@ public class ReportController {
 
             tuple.first = region.getPostman();
 
-            List<Triple> magazineToSubscribesList = new ArrayList<>();
+            List<Quarter> magazineToSubscribesList = new ArrayList<>();
             tuple.second = magazineToSubscribesList;
-
+            tuple.fourth = magazineToSubscribesList.size();
             for (Magazine magazine : magazines) {
                 List<Subscriber> subscribers = subscribeRepository.subscribersByMagazineAndRegion(magazine, region);
                 if (subscribers.isEmpty()) {
                     continue;
                 }
-                Triple magazineToSubscribes = new Triple();
+                Quarter magazineToSubscribes = new Quarter();
                 magazineToSubscribesList.add(magazineToSubscribes);
                 List<Pair> pairs = new LinkedList<>();
 
@@ -208,48 +212,18 @@ public class ReportController {
                     }
                 }
                 magazineToSubscribes.third = days / subscribesQuantity;
+                magazineToSubscribes.fourth = pairs.size();
             }
 
         }
         model.addAttribute("tuples", tuples);
+        model.addAttribute("postmanquantity", postmans.size());
+        model.addAttribute("regionquantity", regions.size());
+        model.addAttribute("magazinequantity", magazines.size());
         return "reports/global";
     }
 
-    private class Triple {
-
-        private Object first;
-
-        private Object second;
-
-        private Object third;
-
-        public Object getFirst() {
-            return first;
-        }
-
-        public void setFirst(final Object first) {
-            this.first = first;
-        }
-
-        public Object getSecond() {
-            return second;
-        }
-
-        public void setSecond(final Object second) {
-            this.second = second;
-        }
-
-        public Object getThird() {
-            return third;
-        }
-
-        public void setThird(final Object third) {
-            this.third = third;
-        }
-
-    }
-
-    private class Tuple {
+    private class Quarter {
 
         private Object first;
 
@@ -289,6 +263,79 @@ public class ReportController {
 
         public void setFourth(final Object fourth) {
             this.fourth = fourth;
+        }
+    }
+
+    private class Tuple {
+
+        private Object first;
+
+        private Object second;
+
+        private Object third;
+
+        private Object fourth;
+
+        private Object fifth;
+
+        private Object six;
+
+        private Object seven;
+
+        public Object getFirst() {
+            return first;
+        }
+
+        public void setFirst(final Object first) {
+            this.first = first;
+        }
+
+        public Object getSecond() {
+            return second;
+        }
+
+        public void setSecond(final Object second) {
+            this.second = second;
+        }
+
+        public Object getThird() {
+            return third;
+        }
+
+        public void setThird(final Object third) {
+            this.third = third;
+        }
+
+        public Object getFourth() {
+            return fourth;
+        }
+
+        public void setFourth(final Object fourth) {
+            this.fourth = fourth;
+        }
+
+        public Object getFifth() {
+            return fifth;
+        }
+
+        public void setFifth(final Object fifth) {
+            this.fifth = fifth;
+        }
+
+        public Object getSix() {
+            return six;
+        }
+
+        public void setSix(final Object six) {
+            this.six = six;
+        }
+
+        public Object getSeven() {
+            return seven;
+        }
+
+        public void setSeven(final Object seven) {
+            this.seven = seven;
         }
     }
 
