@@ -3,6 +3,7 @@ package com.danilov.dbcourse.subscriber;
 import com.danilov.dbcourse.address.Address;
 import com.danilov.dbcourse.subscribe.Subscribe;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.*;
@@ -41,8 +42,8 @@ public class Subscriber {
     private long apartment;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @Embedded
-    @CollectionTable(name = "subscriber_subscribes", joinColumns = @JoinColumn(name = "id"))
+    @Cascade(value=org.hibernate.annotations.CascadeType.ALL)
+    @CollectionTable(name = "subscriber_subscribes", joinColumns = @JoinColumn(name = "subscriber_id"))
     private Set<Subscribe> subscribes;
 
     @ManyToOne

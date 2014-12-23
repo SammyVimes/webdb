@@ -66,4 +66,9 @@ public class Address {
         this.region = region;
     }
 
+    @Override
+    public String toString() {
+        return house + " " + street;
+    }
+
 }

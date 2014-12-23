@@ -1,6 +1,7 @@
 package com.danilov.dbcourse.subscriber;
 
 import com.danilov.dbcourse.address.Address;
+import com.danilov.dbcourse.subscribe.Subscribe;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,10 @@ public class SubscriberRepository {
 
     @Transactional
     public Subscriber merge(Subscriber subscriber) {
+        if (subscriber.getSubscribes() != null) {
+            entityManager.createNativeQuery("delete from subscriber_subscribes where subscriber_id=" + subscriber.getPassport()).executeUpdate();
+            entityManager.flush();
+        }
         return entityManager.merge(subscriber);
     }
 

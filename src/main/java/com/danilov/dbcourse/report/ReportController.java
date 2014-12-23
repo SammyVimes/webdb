@@ -167,8 +167,10 @@ public class ReportController {
         List<Region> regions = addressRepository.getAllRegions();
 
         List<Magazine> magazines = magazineRepository.findAll();
+        List<Tuple> tuples = new LinkedList<>();
         for (Region region : regions) {
             Tuple tuple = new Tuple();
+            tuples.add(tuple);
 
             tuple.third = region;
 
@@ -209,6 +211,7 @@ public class ReportController {
             }
 
         }
+        model.addAttribute("tuples", tuples);
         return "reports/global";
     }
 
