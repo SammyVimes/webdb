@@ -25,7 +25,8 @@
 
         <div class="row" th:each="street : ${addresses}" style="border: 1px solid #000000; padding: 15px;">
             <div class="col-lg-3 col-sm-3 col-md-3">
-                <b><span th:text="${street.street}"></span></b>
+                <b><span th:text="${street.street} "></span></b>
+                <b><span th:text="${street.house}"></span></b>
             </div>
             <div class="col-lg-3 col-sm-3 col-md-3">
                 <a class="btn btn-danger btn-outline" href="" th:href="@{/regions/edit(id=${region.id})}">Удалить</a>

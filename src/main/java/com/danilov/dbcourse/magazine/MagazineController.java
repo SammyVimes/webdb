@@ -92,9 +92,11 @@ public class MagazineController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("magazines", magazineRepository.findAll());
-        model.addAttribute("message", new Message("Подписка оформлена", Message.Type.SUCCESS));
-        return "magazine/magazines";
+        model.addAttribute("magazine", magazine);
+        model.addAttribute("startDate", new Date());
+        model.addAttribute("endDate", _endDate);
+        model.addAttribute("subscriber", subscriber);
+        return "magazine/cert";
     }
 
 }

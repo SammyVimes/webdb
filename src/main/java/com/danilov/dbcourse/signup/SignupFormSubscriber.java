@@ -19,6 +19,10 @@ public class SignupFormSubscriber {
     @NotBlank(message = SignupFormSubscriber.NOT_BLANK_MESSAGE)
     private String house;
 
+    private String name;
+    private String surname;
+    private String patronymic;
+
     private Long appartment;
 
     private Long passport;
@@ -69,5 +73,29 @@ public class SignupFormSubscriber {
 
     public void setStreet(final String street) {
         this.street = street;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(final String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(final String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 }

@@ -57,7 +57,11 @@ public class SignupController {
             addressRepository.saveAddress(address);
         }
         subscriber.setAddress(address);
+        subscriber.setName(form.getName());
+        subscriber.setSurname(form.getSurname());
+        subscriber.setPatronymic(form.getPatronymic());
         subscriber.setPassport(form.getPassport());
+        subscriber.setApartment(form.getAppartment());
         subscriber = subscriberRepository.save(subscriber);
         subscriberService.signin(subscriber);
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
@@ -79,6 +83,10 @@ public class SignupController {
             addressRepository.saveAddress(address);
         }
         subscriber.setAddress(address);
+        subscriber.setName(form.getName());
+        subscriber.setSurname(form.getSurname());
+        subscriber.setPatronymic(form.getPatronymic());
+        subscriber.setApartment(form.getAppartment());
         subscriber = subscriberRepository.save(subscriber);
         subscriberService.signin(subscriber);
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
